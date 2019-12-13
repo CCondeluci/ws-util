@@ -3,5 +3,6 @@ let services = require('./services');
 
 // api endpoints
 router.get("/refcards/:deckId", services.GetRefCards);
+router.get("/price/jp/:deckId", services.GetYYTPrice);
 
 module.exports = router;
