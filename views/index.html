@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ws-util</title>
+    <style>
+    </style>
+    
+</head>
+<body>
+    
+</body>
+</html>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="a collection of weiss schwarz utilities for eng and jp">
+    <meta name="author" content="">
+
+    <title>ws-util</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+    
+    <link href="styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <header role="banner" class="masthead bg-blue">
+      <div class="container masthead-flex">
+        <a href="#" class="masthead-logo">ws-util</a>
+        <span class="lead center-head">a collection of weiss schwarz utilities for eng and jp</span>
+        <nav role="navigation" class="masthead-nav">
+          <a href="#refcards">Reference Cards</a>
+        </nav>
+      </div>
+    </header>
+    <main role="main" class="container main">
+        <div class="Box box-shadow-medium">
+            <div name="refcards" class="Box-header">
+                <h3 class="Box-title">
+                    One-Sheet JP Reference Cards with Translations
+                </h3>
+            </div>
+            <div class="Box-body">
+                <p>
+                    This utility retrieves a deck from EncoreDecks and collates all reference cards for that deck into 
+                    one easily readable set of pages, rather than requiring a user to click and print all reference 
+                    cards individually. The exact width and height of each reference card has been preserved, so the 
+                    output from this utility <i>should</i> be acceptable for official WGP events. Reference cards will 
+                    not bleed or break onto successive pages when printed. This will only work for decks that only 
+                    contain JP cards.
+                </p>
+                <p>
+                    To submit, simply copy and paste the deck code from any JP EncoreDecks URL into the box and click the button. 
+                    Submission can take a while, as HotC does not like anyone hitting their endpoints quickly. Please be 
+                    patient while the utility processes your deck.
+                </p>
+            </div>
+            <div class="Box-footer">
+                <div class="d-flex align">
+                    <p>
+                        <input id="refCardDeckCode" class="form-control" type="text" placeholder="EncoreDecks Code"/>
+                        <button id="refCardSubmit" class="btn btn-primary mr-2" type="button" onclick="getRefCards()" >Submit</button>
+                        <button id="refCardLoading" style="display: none;" class="btn btn-primary mr-2" disabled><span>Loading</span><span class="AnimatedEllipsis"></span></button>
+                    </p>
+                    <div class="submit-note">
+                        Example: https://www.encoredecks.com/deck/
+                        <span class="highlight">9OxCN_EMf</span> <-- 
+                        Enter this code!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <script>
+            $(document).ready(function() {
+                // ready processing
+            });
+
+            function getRefCards() {
+                $("#refCardSubmit").hide();
+                $("#refCardLoading").show();
+                window.location.href = '/refcards/' + $("#refCardDeckCode").val();
+            }
+        </script>
+    </main>
+  </body>
+</html>

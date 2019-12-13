@@ -1,0 +1,59 @@
+.masthead {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  height: 70px;
+}
+
+.masthead-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.masthead a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
+
+.masthead .masthead-logo {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 1);
+}
+
+.masthead .masthead-nav {
+  font-size: 1rem;
+}
+
+.masthead .masthead-nav a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.masthead .masthead-nav a:not(:last-child) {
+  margin-right: 1.25rem;
+}
+
+.main {
+  padding: 3rem 1.5rem;
+}
+
+.highlight {
+    text-emphasis: bold;
+    color: red;
+}
+
+.center-head {
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
+    margin-bottom: 0px;;
+}
+
+.align {
+    align-items: center;
+}
+
+.submit-note {
+    color: grey;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    font-style: italic;
+}
