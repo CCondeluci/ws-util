@@ -24,7 +24,7 @@ module.exports =  async (request, response, next) => {
         // get deck from encore
         let parsedDeck = await EncoreDecks.getDeck(deckId);
         // get ref cards from hotc and format
-        let refcardHTML = '<html><head></head>' +
+        let refcardHTML = '<html><head><meta name="google" content="notranslate"></head>' +
             '<style>div { page-break-inside:auto } ' + 
             'span { page-break-inside:avoid; page-break-after:auto }' +
             '</style><body><div>';
