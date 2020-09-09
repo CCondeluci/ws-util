@@ -15,7 +15,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
  * @return {String} HTML of ref card as displayed exactly by HOTC
  */
 
-module.exports.getRefCard = async function (cardCode) {
+module.exports.getRefCard = async function (cardCode, fileType) {
     var options = {
         url: HOTC.CARD_LIST_URL + cardCode + HOTC.SHORT_QUERY,
         json: true
@@ -23,8 +23,11 @@ module.exports.getRefCard = async function (cardCode) {
     let body = await request(options);
     // parse and index full html response
     let root = cheerio.load(body);
+    // get img name and filetype
+    let cardImg = root('img').attr('src');
+    cardImg = cardImg.split('heartofthecards/images/cards/ws/')[1];
     // set the img link to true hotc
-    root('img').attr('src', HOTC.IMG_URL + cardCode.replace('/', '-').toLowerCase() + '.gif');
+    root('img').attr('src', HOTC.IMG_URL + cardImg); //cardCode.replace('/', '-').toLowerCase() + '.gif');
     // recreate ref card from response
     let refCard = '<table width="400" style="border:1px solid black">' + root('table').html() + '</table>';
 
