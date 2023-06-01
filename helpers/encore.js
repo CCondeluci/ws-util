@@ -103,3 +103,85 @@ module.exports.getDeck = async function (deckId) {
 
     return parsedDeck;
 }
+
+/**
+ * Get Sets from Encore API
+ * 
+ * @return {Array} parsed deck of unique cards
+ */
+
+ module.exports.getSets = async function () {
+    // Get set information from encoredecks
+    let options = {
+        url: Encore.URL + '/api/neosets',
+        json: true
+    };
+    let sets = await request(options);
+
+    // Get JP & EN Series Lists
+    options = {
+        url: Encore.URL + '/api/serieslist/JP',
+        json: true
+    };
+    let jpSeries = await request(options);
+    options = {
+        url: Encore.URL + '/api/serieslist/EN',
+        json: true
+    };
+    let enSeries = await request(options);
+
+    // sort the neo-standard sets
+    sets.sort((a, b) => (a.name > b.name) ? 1 : -1)
+
+    // loop through each list of jp & en and collapse releases to sets
+    for (let set of sets) {
+        set.jp = [];
+        for (let releaseCode of set.setcodes) {
+            let matchedJP = jpSeries.filter(x => x.set == releaseCode)
+            set.jp.push(...matchedJP);
+        }
+        set.en = [];
+        for (let releaseCode of set.setcodes) {
+            let matchedEN = enSeries.filter(x => x.set == releaseCode)
+            set.en.push(...matchedEN);
+        }
+    }
+
+    return sets;
+}
+
+/**
+ * Search cards given obj from Encore API
+ * 
+ * @return {Array} parsed deck of unique cards
+ */
+
+ module.exports.searchCards = async function (searchObj) {
+    let cards = [];
+    let promiseArr = [];
+    for (let enSeries of searchObj.selectedSet.en) {
+        promiseArr.push(new Promise(async function (resolve, reject) {
+            let options = {
+                url: Encore.URL + 'api/series/' + enSeries._id + '/cards',
+                json: true
+            };
+            let result = await request(options);
+            cards.push(...result);
+            resolve();
+        }));
+    }
+
+    for (let jpSeries of searchObj.selectedSet.jp) {
+        promiseArr.push(new Promise(async function (resolve, reject) {
+            let options = {
+                url: Encore.URL + 'api/series/' + jpSeries._id + '/cards',
+                json: true
+            };
+            let result = await request(options);
+            cards.push(...result);
+            resolve();
+        }));
+    }
+
+    return cards;
+}
