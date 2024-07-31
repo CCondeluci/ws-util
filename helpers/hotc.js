@@ -27,7 +27,7 @@ module.exports.getRefCard = async function (cardCode, fileType) {
     let cardImg = root('img').attr('src');
     cardImg = cardImg.split('heartofthecards/images/cards/ws/')[1];
     // set the img link to true hotc
-    root('img').attr('src', HOTC.IMG_URL + cardImg); //cardCode.replace('/', '-').toLowerCase() + '.gif');
+    root('img').first().attr('src', HOTC.IMG_URL + cardImg); //cardCode.replace('/', '-').toLowerCase() + '.gif');
     // recreate ref card from response
     let refCard = '<table width="400" style="border:1px solid black">' + root('table').html() + '</table>';
 
