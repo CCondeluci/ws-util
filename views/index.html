@@ -24,7 +24,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.js"></script>
-    <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+    <!-- <link href="https://unpkg.com/@primer/css@^14.0.0/dist/primer.css" rel="stylesheet" /> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.css" rel="stylesheet" />
     
     <link href="styles.css" rel="stylesheet">
@@ -44,7 +45,7 @@
         <div class="Box box-shadow-medium">
             <div name="refcards" class="Box-header">
                 <h3 class="Box-title">
-                    One-Sheet JP Reference Cards with Translations
+                    One-Sheet JP Reference Cards with HotC Translations
                 </h3>
             </div>
             <div class="Box-body">
@@ -60,6 +61,10 @@
                     To submit, simply copy and paste the deck code from any JP EncoreDecks URL into the box and click the button. 
                     Submission can take a while, as HotC does not like anyone hitting their endpoints quickly. Please be 
                     patient while the utility processes your deck.
+                </p>
+                <p>
+                    <b>THIS WILL BREAK ON ANY CARD THAT IS NOT INDEXED ON HOTC.</b> 
+                    Remove any PRs or un-indexed cards from your decklist to generate the rest of the sheet.
                 </p>
             </div>
             <div class="Box-footer">
@@ -77,49 +82,39 @@
                 </div>
             </div>
         </div>
-        <!-- yyt price -->
-        <!-- <div class="Box box-shadow-medium" style="margin-top: 30px;">
-            <div name="yytprice" class="Box-header">
+        <br>
+        <div class="Box box-shadow-medium">
+            <div name="communityrefcards" class="Box-header">
                 <h3 class="Box-title">
-                    Yuyutei Price Estimate
+                    One-Sheet JP Reference Cards with Community Translations
                 </h3>
             </div>
             <div class="Box-body">
                 <p>
-                    Estimates a deck's Yuyutei value with one click! Also gives a price breakdown by card.
+                    This is the same utility as above, except this one uses the community translations. The reference cards 
+                    look a little different, but will do you just fine as a one-page reference if HotC official formatted 
+                    translations aren't needed or available (like for Dxx or MAR).
                 </p>
                 <p>
-                    To submit, simply copy and paste the deck code from any JP EncoreDecks URL into the box and click 
-                    the button. just like above.
+                    <b>The spacing will look a little weird in your browser.</b> 
+                    These are meant to be printed- print or save to PDF and it'll look fine, I promise.
                 </p>
             </div>
             <div class="Box-footer">
                 <div class="d-flex align">
                     <p>
-                        <input id="yytPriceDeckCode" class="form-control" type="text" placeholder="EncoreDecks Code"/>
-                        <button id="yytPriceSubmit" class="btn btn-primary mr-2" type="button" onclick="getYYTPrice()" >Submit</button>
-                        <button id="yytPriceLoading" style="display: none;" class="btn btn-primary mr-2" disabled><span>Loading</span><span class="AnimatedEllipsis"></span></button>
+                        <input id="commRefCardDeckCode" class="form-control" type="text" placeholder="EncoreDecks Code"/>
+                        <button id="commRefCardSubmit" class="btn btn-primary mr-2" type="button" onclick="getCommunityRefCards()" >Submit</button>
+                        <button id="commRefCardLoading" style="display: none;" class="btn btn-primary mr-2" disabled><span>Loading</span><span class="AnimatedEllipsis"></span></button>
                     </p>
-                    <div class="yyt-price-total" style="display: none;">
-                        Total: <span id="yytPriceTotal"></span> ¥
+                    <div class="submit-note">
+                        Example: https://www.encoredecks.com/deck/
+                        <span class="highlight">9OxCN_EMf</span> <-- 
+                        Enter this code!
                     </div>
                 </div>
             </div>
-            <div class="Box-body">
-                <table id="yytPriceOutput" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Combined</th>
-                    </thead>
-                    <tbody id="yytPriceBody">
-                    </tbody>
-                </table>
-            </div>
-        </div> -->
-
+        </div>
         
         <script>
             $(document).ready(function() {
@@ -132,33 +127,10 @@
                 window.location.href = '/refcards/' + $("#refCardDeckCode").val();
             }
 
-            function getYYTPrice() {
-                $("#yytPriceSubmit").hide();
-                $("#yytPriceLoading").show();
-                var deckCode = $("#yytPriceDeckCode").val();
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: '/price/jp/' + deckCode,
-                    success: function(data) {
-                        $('.yyt-price-total').hide();
-                        var dynatable = $('#yytPriceOutput').dynatable({ 
-                            dataset: { records: data.cards }, 
-                            features: { pushState: false, paginate: false }
-                        }).data("dynatable");
-                        dynatable.settings.dataset.originalRecords =  data.cards;
-                        dynatable.process();  
-                        $('#yytPriceTotal').html(data.total);
-                        $("#yytPriceLoading").hide();
-                        $("#yytPriceSubmit").show();
-                        $('.yyt-price-total').show();
-                    },
-                    error: function(xhr,status,error) {
-                        console.log(xhr,status,error);
-                        $("#yytPriceLoading").hide();
-                        $("#yytPriceSubmit").show();
-                    }
-                });
+            function getCommunityRefCards() {
+                $("#commRefCardSubmit").hide();
+                $("#commRefCardLoading").show();
+                window.location.href = '/refcards/community/' + $("#commRefCardDeckCode").val();
             }
         </script>
     </main>

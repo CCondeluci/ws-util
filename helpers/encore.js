@@ -110,7 +110,7 @@ module.exports.getDeck = async function (deckId) {
  * @return {Array} parsed deck of unique cards
  */
 
- module.exports.getSets = async function () {
+module.exports.getSets = async function () {
     // Get set information from encoredecks
     let options = {
         url: Encore.URL + '/api/neosets',
@@ -156,7 +156,7 @@ module.exports.getDeck = async function (deckId) {
  * @return {Array} parsed deck of unique cards
  */
 
- module.exports.searchCards = async function (searchObj) {
+module.exports.searchCards = async function (searchObj) {
     let cards = [];
     let promiseArr = [];
     for (let enSeries of searchObj.selectedSet.en) {
@@ -184,4 +184,52 @@ module.exports.getDeck = async function (deckId) {
     }
 
     return cards;
+}
+
+/**
+ * Build HotC-style reference card HTML but for community TLs
+ * 
+ * @param {Object} card single card as returned by Encoredecks API for a call to getDeck
+ * @return {String} html for a single reference card
+ */
+module.exports.getCommunityRefCard = function(card) {
+    // base html table to mirror HotC, want them to look similar
+    refCardString = '<table width="100%" style="border:1px solid black">';
+    refCardString += '<tbody><tr><td colspan="3"><b>';
+    // card name
+    if (card.locale.EN.name) {
+        refCardString += card.ws_code + ' &nbsp; ' + card.locale.EN.name + '</b><br>';
+    } else {
+        refCardString += card.ws_code + ' &nbsp; ' + card.locale.NP.name + '</b><br>';
+    }
+    // traits
+    if (card.locale.EN.attributes.length > 0) {
+        for (let trait of card.locale.EN.attributes) {
+            refCardString += trait + ', ';
+        }
+    } else {
+        for (let trait of card.locale.NP.attributes) {
+            refCardString += trait + ', ';
+        }
+    }
+    refCardString = refCardString.slice(0, -2);
+    // image
+    refCardString += '</td></tr><tr><td style="padding-right: 1em;"><img width="131px" src="';
+    refCardString += 'https://www.encoredecks.com/images/' + card.imagepath + '">';
+    refCardString += '</td><td style="vertical-align: top;">';
+    // effects
+    if (card.locale.EN.ability.length > 0) {
+        for (let ability of card.locale.EN.ability) {
+            refCardString += ability + '<br>';
+        }
+    } else {
+        for (let ability of card.locale.NP.ability) {
+            refCardString += ability + '<br>';
+        }
+        refCardString += '<br><i>(No translation for this card exists in Encoredeck\'s community database.)</i><br>'
+    }
+    refCardString = refCardString.slice(0, -4);
+    refCardString += '</td></tr></tbody></table>';
+
+    return refCardString;
 }
