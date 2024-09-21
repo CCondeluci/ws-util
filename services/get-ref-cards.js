@@ -31,6 +31,7 @@ module.exports =  async (request, response, next) => {
         let count = 0;
         for (let card of parsedDeck) {
             let refCard = await HotC.getRefCard(card.ws_code);
+            console.log("REF CARD GET: " + card.ws_code);
             if (count%2 == 0 ) {
                 refCard = '<span style="display: flex">' + refCard
             } else {
@@ -42,6 +43,7 @@ module.exports =  async (request, response, next) => {
         refcardHTML += '</div></body></html>';
         response.status(200).send(refcardHTML);
     } catch (error) {
+        console.log("FAILED TO GET REF CARD.");
         response.status(500);
     }
 }
