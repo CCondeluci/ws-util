@@ -22,6 +22,7 @@ module.exports.getRefCard = async function (cardCode, fileType) {
             json: true
         };
         let body = await request(options);
+        console.log(body);
         // parse and index full html response
         let root = cheerio.load(body);
         // get img name and filetype
