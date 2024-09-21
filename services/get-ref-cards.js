@@ -8,6 +8,12 @@
 const EncoreDecks = require('./../helpers/encore');
 const HotC = require('./../helpers/hotc');
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
+
 /**
  * Get Reference Cards
  * 
@@ -30,6 +36,7 @@ module.exports =  async (request, response, next) => {
             '</style><body><div>';
         let count = 0;
         for (let card of parsedDeck) {
+            await sleep(10000);
             let refCard = await HotC.getRefCard(card.ws_code);
             console.log("REF CARD GET: " + card.ws_code);
             if (count%2 == 0 ) {
